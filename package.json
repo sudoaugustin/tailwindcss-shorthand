@@ -1,0 +1,33 @@
+{
+  "name": "tailwindcss-plugin",
+  "version": "1.0.0",
+  "description": "Useful tailwindcss classes and variants to boost productivity",
+  "main": "dist/index.js",
+  "keywords": [
+    "tailwindcss",
+    "plugin",
+    "shorthand",
+    "productivity"
+  ],
+  "author": "sudoaugustin",
+  "license": "ISC",
+  "scripts": {
+    "test": "jest",
+    "build": "esbuild ./index.ts --format=cjs --outdir=./dist",
+    "tailwind": "tailwindcss -i ./playground/index.css -o ./dist/index.css"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.8.3",
+    "@types/jest": "^29.5.12",
+    "cssnano": "^7.0.6",
+    "esbuild": "^0.23.1",
+    "esbuild-jest": "^0.5.0",
+    "jest": "^29.7.0",
+    "postcss": "^8.4.45",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.5.4"
+  },
+  "peerDependencies": {
+    "tailwindcss": "^3.4.1"
+  }
+}

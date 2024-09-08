@@ -1,0 +1,25 @@
+name: Latest Release
+on:
+  release:
+    types:
+      - published
+jobs:
+  publish:
+    name: 🚀 Publishing to NPM
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org/
+
+      - name: Build & Publish
+        run: |
+          pnpm install
+          pnpm test
+          pnpm build
+          pnpm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
