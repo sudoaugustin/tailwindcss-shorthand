@@ -1,10 +1,14 @@
-import postcss from "postcss";
 import cssNano from "cssnano";
+import postcss from "postcss";
 import tailwindcss from "tailwindcss";
-import tailwindConfig from "./tailwind.config";
+import tailwindcssPlugin, { type Options } from ".";
 
-async function compile(content: string) {
-  tailwindConfig.content = [{ raw: content }] as never[];
+async function compile(content: string, config: Options = {}) {
+  const tailwindConfig = {
+    content: [{ raw: content }] as never[],
+    plugins: [tailwindcssPlugin(config)],
+  };
+
   const result = await postcss([
     tailwindcss(tailwindConfig),
     cssNano(),
@@ -14,6 +18,8 @@ async function compile(content: string) {
 
 test("Test 'z-' utility", async () => {
   expect(await compile("z-5")).toBe(".z-5{z-index:5}");
+
+  expect(await compile("z-6", { zIndexes: ["6"] })).toBe(".z-6{z-index:6}");
 });
 
 test("Test 'a-' utility", async () => {
@@ -79,17 +85,16 @@ test("Test 'flex-' utility", async () => {
 });
 
 test("Test nth-child variant", async () => {
+  const options: Options = { nths: [11] };
+
   expect(await compile("1st:w-10")).toBe(
     ".\\31st\\:w-10:first-child{width:2.5rem}"
   );
   expect(await compile("2nd:w-10")).toBe(
     ".\\32nd\\:w-10:nth-child(2){width:2.5rem}"
   );
-  expect(await compile("3rd:w-10")).toBe(
-    ".\\33rd\\:w-10:nth-child(3){width:2.5rem}"
-  );
-  expect(await compile("4th:w-10")).toBe(
-    ".\\34th\\:w-10:nth-child(4){width:2.5rem}"
+  expect(await compile("11th:w-10", options)).toBe(
+    ".\\31 1th\\:w-10:nth-child(11){width:2.5rem}"
   );
 
   // Group variants
@@ -99,6 +104,9 @@ test("Test nth-child variant", async () => {
   expect(await compile("group-2nd:w-10")).toBe(
     ".group:nth-child(2) .group-2nd\\:w-10{width:2.5rem}"
   );
+  expect(await compile("group-11th:w-10", options)).toBe(
+    ".group:nth-child(11) .group-11th\\:w-10{width:2.5rem}"
+  );
 
   // Peer variants
   expect(await compile("peer-1st:w-10")).toBe(
@@ -107,20 +115,21 @@ test("Test nth-child variant", async () => {
   expect(await compile("peer-2nd:w-10")).toBe(
     ".peer:nth-child(2)~.peer-2nd\\:w-10{width:2.5rem}"
   );
+  expect(await compile("peer-11th:w-10", options)).toBe(
+    ".peer:nth-child(11)~.peer-11th\\:w-10{width:2.5rem}"
+  );
 });
 
 test("Test nth-of-type variant", async () => {
+  const options: Options = { nths: [11] };
   expect(await compile("1st-of:w-10")).toBe(
     ".\\31st-of\\:w-10:first-of-type{width:2.5rem}"
   );
   expect(await compile("2nd-of:w-10")).toBe(
     ".\\32nd-of\\:w-10:nth-of-type(2){width:2.5rem}"
   );
-  expect(await compile("3rd-of:w-10")).toBe(
-    ".\\33rd-of\\:w-10:nth-of-type(3){width:2.5rem}"
-  );
-  expect(await compile("4th-of:w-10")).toBe(
-    ".\\34th-of\\:w-10:nth-of-type(4){width:2.5rem}"
+  expect(await compile("11th-of:w-10", options)).toBe(
+    ".\\31 1th-of\\:w-10:nth-of-type(11){width:2.5rem}"
   );
 
   // Group variants
@@ -130,6 +139,9 @@ test("Test nth-of-type variant", async () => {
   expect(await compile("group-2nd-of:w-10")).toBe(
     ".group:nth-of-type(2) .group-2nd-of\\:w-10{width:2.5rem}"
   );
+  expect(await compile("group-11th-of:w-10", options)).toBe(
+    ".group:nth-of-type(11) .group-11th-of\\:w-10{width:2.5rem}"
+  );
 
   // Peer variants
   expect(await compile("peer-1st-of:w-10")).toBe(
@@ -138,14 +150,22 @@ test("Test nth-of-type variant", async () => {
   expect(await compile("peer-2nd-of:w-10")).toBe(
     ".peer:nth-of-type(2)~.peer-2nd-of\\:w-10{width:2.5rem}"
   );
+  expect(await compile("peer-11th-of:w-10", options)).toBe(
+    ".peer:nth-of-type(11)~.peer-11th-of\\:w-10{width:2.5rem}"
+  );
 });
 
 test("Test data-state variant", async () => {
+  const options = { states: ["pending"] };
+
   expect(await compile("state-on:w-10")).toBe(
     ".state-on\\:w-10[data-state=on]{width:2.5rem}"
   );
   expect(await compile("state-off:w-10")).toBe(
     ".state-off\\:w-10[data-state=off]{width:2.5rem}"
+  );
+  expect(await compile("state-pending:w-10", options)).toBe(
+    ".state-pending\\:w-10[data-state=pending]{width:2.5rem}"
   );
 
   // Group variants
@@ -155,6 +175,18 @@ test("Test data-state variant", async () => {
   expect(await compile("group-state-off:w-10")).toBe(
     ".group[data-state=off] .group-state-off\\:w-10{width:2.5rem}"
   );
+  expect(await compile("group-state-pending:w-10", options)).toBe(
+    ".group[data-state=pending] .group-state-pending\\:w-10{width:2.5rem}"
+  );
 
   // Peer variants
+  expect(await compile("peer-state-on:w-10")).toBe(
+    ".peer[data-state=on]~.peer-state-on\\:w-10{width:2.5rem}"
+  );
+  expect(await compile("peer-state-off:w-10")).toBe(
+    ".peer[data-state=off]~.peer-state-off\\:w-10{width:2.5rem}"
+  );
+  expect(await compile("peer-state-pending:w-10", options)).toBe(
+    ".peer[data-state=pending]~.peer-state-pending\\:w-10{width:2.5rem}"
+  );
 });

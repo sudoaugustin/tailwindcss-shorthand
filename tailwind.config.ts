@@ -4,5 +4,5 @@ import tailwindcssPlugin from ".";
 
 export default {
   content: ["./playground/index.html"],
-  plugins: [tailwindcssPlugin({})],
+  plugins: [tailwindcssPlugin()],
 };

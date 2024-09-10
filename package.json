@@ -14,6 +14,7 @@
   "scripts": {
     "test": "jest",
     "build": "esbuild ./index.ts --format=cjs --outdir=./dist",
+    "watch": "tailwindcss -i ./playground/index.css -o ./dist/index.css --watch",
     "tailwind": "tailwindcss -i ./playground/index.css -o ./dist/index.css"
   },
   "devDependencies": {

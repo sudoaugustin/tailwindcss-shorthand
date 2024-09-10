@@ -1,8 +1,8 @@
 import plugin from "tailwindcss/plugin";
 
-type Options = {
+export type Options = {
+  nths?: number[];
   data?: { [k: string]: string[] };
-  childs?: number[];
   states?: string[];
   zIndexes?: string[];
   separator?: string;
@@ -55,7 +55,7 @@ function parseVal(values: string | string[], separator: string) {
 }
 
 const defaults = {
-  childs: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+  nths: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
   states: [
     "open",
     "closed",
@@ -82,7 +82,7 @@ const defaults = {
 
 export default function tailwindcssPlugin({
   data = {},
-  childs = defaults.childs,
+  nths = defaults.nths,
   states = defaults.states,
   zIndexes = defaults.zIndexes,
   separator = "x",
@@ -154,7 +154,7 @@ export default function tailwindcssPlugin({
       });
 
       // Child variants
-      childs.forEach((child) => {
+      nths.forEach((child) => {
         const order = `${child}${
           child === 1 ? "st" : child === 2 ? "nd" : child === 3 ? "rd" : "th"
         }`;
