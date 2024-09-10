@@ -26,7 +26,7 @@ jobs:
       - name: Build & Publish
         run: |
           pnpm install
-          pnpm jest
+          pnpm test
           pnpm build
           pnpm version ${{ env.VERSION }}-alpha.${{ env.COMMIT_ID }} --no-git-tag-version
           pnpm publish --tag alpha --no-git-checks
