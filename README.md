@@ -1,4 +1,4 @@
-# Useful tailwindcss classes and variants to boost productivity
+# Useful tailwindcss shorthand classes and variants to boost productivity
 
 ## Installation
 
