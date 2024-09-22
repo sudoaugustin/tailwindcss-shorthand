@@ -4,13 +4,13 @@
 
 ```bash
 // NPM
-npm install tailwindcss-plugin --save-dev
+npm install tailwindcss-shorthand --save-dev
 
 // YARN
-yarn add tailwindcss-plugin -D
+yarn add tailwindcss-shorthand -D
 
 // PNPM
-pnpm add tailwindcss-plugin -D
+pnpm add tailwindcss-shorthand -D
 ```
 
 ```javascript
@@ -21,7 +21,7 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [require("tailwindcss-plugin")()],
+  plugins: [require("tailwindcss-shorthand")()],
 };
 ```
 
@@ -102,7 +102,7 @@ module.exports = {
     extend: {},
   },
   plugins: [
-    require("tailwindcss-plugin")({
+    require("tailwindcss-shorthand")({
       // Default ["5", "10", "15", "20", "25", "30", "35", "40", "45", "50"]
       zIndexes: new Array(50).fill(null).map((_, i) => i + 1),
     }),
@@ -155,7 +155,7 @@ module.exports = {
     extend: {},
   },
   plugins: [
-    require("tailwindcss-plugin")({
+    require("tailwindcss-shorthand")({
       // Default {}
       data: {
         align: ["left", "center", "women"],
@@ -202,7 +202,7 @@ module.exports = {
     extend: {},
   },
   plugins: [
-    require("tailwindcss-plugin")({
+    require("tailwindcss-shorthand")({
       // Default [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
       nths: [11, 99],
     }),
@@ -228,7 +228,7 @@ module.exports = {
     extend: {},
   },
   plugins: [
-    require("tailwindcss-plugin")({
+    require("tailwindcss-shorthand")({
       // Default ["open", "closed", "active", "inactive", "on", "off", "checked", "unchecked", "visible", "hidden", "expanded", "collapsed", "loading", "loaded", "selected", "success", "error", "enabled", "disabled"]
       states: ["pending"],
     }),
@@ -253,7 +253,7 @@ module.exports = {
     extend: {},
   },
   plugins: [
-    require("tailwindcss-plugin")({
+    require("tailwindcss-shorthand")({
       // Default "x"
       separator: "-",
     }),
