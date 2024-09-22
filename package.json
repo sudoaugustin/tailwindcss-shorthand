@@ -1,6 +1,6 @@
 {
   "name": "tailwindcss-shorthand",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Useful tailwindcss shorthand classes and variants to boost productivity",
   "main": "dist/index.js",
   "keywords": [
