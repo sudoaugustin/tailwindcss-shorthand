@@ -3,12 +3,7 @@
   "version": "1.0.1",
   "description": "Useful tailwindcss shorthand classes and variants to boost productivity",
   "main": "dist/index.js",
-  "keywords": [
-    "tailwindcss",
-    "plugin",
-    "shorthand",
-    "productivity"
-  ],
+  "keywords": ["tailwindcss", "plugin", "shorthand", "productivity"],
   "author": "sudoaugustin",
   "license": "ISC",
   "scripts": {

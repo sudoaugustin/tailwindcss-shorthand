@@ -13,7 +13,7 @@ function arrToObj(values: string[], filters: string[] = []) {
     (total, index) =>
       // To fix tailwind generating duplicate classes. If removed, tailwind will generate .z-10,-20,-30... twice.
       filters.includes(`${index}`) ? total : { ...total, [index]: index },
-    {}
+    {},
   );
 }
 
@@ -40,15 +40,10 @@ function parseVal(values: string | string[], separator: string) {
       ["fit-", "fit@"],
       ["max-", "ma@@"],
     ];
-    const $value = tags.reduce(
-      (str, [key, val]) => str.replaceAll(key, val),
-      values
-    );
+    const $value = tags.reduce((str, [key, val]) => str.replaceAll(key, val), values);
     const [x, y = x] = $value
       .split(separator)
-      .map((str) =>
-        tags.reduce((str, [key, val]) => str.replaceAll(val, key), str)
-      );
+      .map((str) => tags.reduce((str, [key, val]) => str.replaceAll(val, key), str));
     return [x, y];
   }
   return values;
@@ -97,7 +92,7 @@ export default function tailwindcssPlugin({
             return { width, height };
           },
         },
-        { values: pairVals(theme("width"), theme("height"), separator) }
+        { values: pairVals(theme("width"), theme("height"), separator) },
       );
 
       // Space utils
@@ -113,7 +108,7 @@ export default function tailwindcssPlugin({
               return { [prop]: `${y} ${x}` };
             },
           },
-          { values: pairVals(values, values, separator, true) }
+          { values: pairVals(values, values, separator, true) },
         );
       });
 
@@ -140,24 +135,14 @@ export default function tailwindcssPlugin({
           values,
         });
 
-        matchVariant(
-          `group-${name}`,
-          (value) => `:merge(.group)[data-${name}="${value}"] &`,
-          { values }
-        );
+        matchVariant(`group-${name}`, (value) => `:merge(.group)[data-${name}="${value}"] &`, { values });
 
-        matchVariant(
-          `peer-${name}`,
-          (value) => `:merge(.peer)[data-${name}="${value}"] ~ &`,
-          { values }
-        );
+        matchVariant(`peer-${name}`, (value) => `:merge(.peer)[data-${name}="${value}"] ~ &`, { values });
       });
 
       // Child variants
       nths.forEach((child) => {
-        const order = `${child}${
-          child === 1 ? "st" : child === 2 ? "nd" : child === 3 ? "rd" : "th"
-        }`;
+        const order = `${child}${child === 1 ? "st" : child === 2 ? "nd" : child === 3 ? "rd" : "th"}`;
 
         [
           { variant: order, pseudo: "nth-child" },
@@ -170,6 +155,6 @@ export default function tailwindcssPlugin({
         });
       });
     },
-    { theme: { zIndex: arrToObj(zIndexes) } }
+    { theme: { zIndex: arrToObj(zIndexes) } },
   );
 }
