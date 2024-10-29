@@ -75,7 +75,7 @@ const defaults = {
   zIndexes: ["5", "10", "15", "20", "25", "30", "35", "40", "45", "50"],
 };
 
-export default function tailwindcssPlugin({
+export default function tailwindCSSShorthand({
   data = {},
   nths = defaults.nths,
   states = defaults.states,
@@ -135,9 +135,23 @@ export default function tailwindcssPlugin({
           values,
         });
 
-        matchVariant(`group-${name}`, (value) => `:merge(.group)[data-${name}="${value}"] &`, { values });
+        matchVariant(
+          `group-${name}`,
+          (value, { modifier }) =>
+            modifier
+              ? `:merge(.group\\/${modifier})[data-${name}="${value}"] &`
+              : `:merge(.group)[data-${name}="${value}"] &`,
+          { values },
+        );
 
-        matchVariant(`peer-${name}`, (value) => `:merge(.peer)[data-${name}="${value}"] ~ &`, { values });
+        matchVariant(
+          `peer-${name}`,
+          (value, { modifier }) =>
+            modifier
+              ? `:merge(.peer\\/${modifier})[data-${name}="${value}"] ~ &`
+              : `:merge(.peer)[data-${name}="${value}"] ~ &`,
+          { values },
+        );
       });
 
       // Child variants
